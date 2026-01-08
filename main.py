@@ -35,22 +35,25 @@ try:
     google_sign_in = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c8']/div[2]/button[1]/span[1]")))
     google_sign_in.click()
 
-    email_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "identifierId"))
+    email_input = wait.until(
+        EC.element_to_be_clickable((By.ID, "identifierId"))
     )
     human_like_typing(email_input, sys.argv[1])  # Use a dedicated test account
 
-    next_button = driver.find_element(By.ID, "identifierNext")
+    next_button = wait.until(EC.element_to_be_clickable((By.ID, "identifierNext")))
+    time.sleep(1.5*random.uniform(1, 2))
     next_button.click()
-    time.sleep(2)
+    time.sleep(1.5*random.uniform(1, 2))
     # Wait for the password field to appear and enter the password
-    password_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "Passwd"))
+    password_input = wait.until(
+        EC.element_to_be_clickable((By.NAME, "Passwd"))
     )
     human_like_typing(password_input, "REMOVED
 
     signin_button = driver.find_element(By.ID, "passwordNext")
+    time.sleep(1.5 * random.uniform(1, 2))
     signin_button.click()
+    time.sleep(1.5 * random.uniform(1, 2))
 
     while True:
         pass
