@@ -76,7 +76,7 @@ try:
     print("human sleep")
     time.sleep(rand_delay())
     print("typing email")
-    human_like_typing(email_input, sys.argv[1])  # Use a dedicated test account
+    human_like_typing(email_input, sys.argv[1])
 
     next_button = wait.until(EC.element_to_be_clickable((By.ID, "identifierNext")))
     time.sleep(rand_delay())
@@ -86,7 +86,6 @@ try:
     time.sleep(rand_delay())
     next_button.click()
     time.sleep(rand_delay())
-    # Wait for the password field to appear and enter the password
     password_input = wait.until(
         EC.element_to_be_clickable((By.NAME, "Passwd"))
     )
@@ -119,9 +118,8 @@ try:
     click_max_button.click()
     print("click and enter username")
     uname_field = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='recipient']")))
-    # human_like_typing(uname_field, "10kboosterguy")
     print("typing username")
-    uname_field.send_keys("inyourface3445")
+    uname_field.send_keys(os.getenv("TARGET_ACCOUNT"))
     print("send money")
     click_send_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c15']/div[3]/button[2]")))
     click_send_button.click()
