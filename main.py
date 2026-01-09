@@ -34,7 +34,7 @@ def human_like_typing(element, text):
         time.sleep(random.uniform(0.05, 0.2))
 
 def rand_delay():
-    return 1.5 * random.uniform(0.7, 2)
+    return .5 * random.uniform(0.7, 2)
 
 def move_nat(target):
     size = target.size
@@ -46,7 +46,7 @@ def move_nat(target):
     actions.move_to_element_with_offset(target, 0, 0)  # top-left of element
 
     # Gradually move to random click point
-    steps = 20
+    steps = 10
     dx = click_x / steps
     dy = click_y / steps
 
@@ -59,22 +59,30 @@ def move_nat(target):
     actions.perform()
 
 try:
+    print("going to rugplay")
     driver.get("https://rugplay.com")
+    print("clicking rugplay signin")
     sign_in = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='sign in']")))
     sign_in.click()
+    print("clicking google sign in")
     google_sign_in = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c8']/div[2]/button[1]/span[1]")))
     google_sign_in.click()
 
     email_input = wait.until(
         EC.element_to_be_clickable((By.ID, "identifierId"))
     )
+    print("natruly hovering on email input")
     move_nat(email_input)
+    print("human sleep")
     time.sleep(rand_delay())
+    print("typing email")
     human_like_typing(email_input, sys.argv[1])  # Use a dedicated test account
 
     next_button = wait.until(EC.element_to_be_clickable((By.ID, "identifierNext")))
     time.sleep(rand_delay())
+    print("moving to next button")
     move_nat(next_button)
+    print("sleeping before clicking next")
     time.sleep(rand_delay())
     next_button.click()
     time.sleep(rand_delay())
@@ -82,13 +90,17 @@ try:
     password_input = wait.until(
         EC.element_to_be_clickable((By.NAME, "Passwd"))
     )
+    print("moving natruly to passwd field")
     move_nat(password_input)
     time.sleep(rand_delay())
+    print("typing password")
     human_like_typing(password_input, os.getenv("PASSWORD"))
 
     signin_button = driver.find_element(By.ID, "passwordNext")
+    print("moving natruly to sign in")
     time.sleep(rand_delay())
     move_nat(signin_button)
+    print("clicking sign in button")
     time.sleep(rand_delay())
     signin_button.click()
     time.sleep(rand_delay())
@@ -109,7 +121,7 @@ try:
     uname_field = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='recipient']")))
     # human_like_typing(uname_field, "10kboosterguy")
     print("typing username")
-    uname_field.send_keys("10kboosterguy")
+    uname_field.send_keys("inyourface3445")
     print("send money")
     click_send_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c15']/div[3]/button[2]")))
     click_send_button.click()
