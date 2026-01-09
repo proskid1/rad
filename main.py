@@ -113,9 +113,7 @@ try:
     print("send money")
     click_send_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c15']/div[3]/button[2]")))
     click_send_button.click()
-
-    while True:
-        pass
+    print("done")
 
 except Exception as e:
     print(f"An error occurred: {e}")
