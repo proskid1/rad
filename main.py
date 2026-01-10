@@ -1,130 +1,31 @@
 import undetected_chromedriver as uc
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from dotenv import load_dotenv
-import sys
-import time
-import random
-import os
+from interactionn_prim import *
+from logger import Logger
 
 load_dotenv()
 
 # Initialize the undetected-chromedriver. It runs headless by default in recent versions
 driver = uc.Chrome(headless=False)
-wait = WebDriverWait(driver, 20)
 
 if sys.argv.__len__() != 2:
     print(f"run this as python3 {sys.argv[0]} [account_gmail]")
     exit(1)
 
  # use javascript:(function(){function getXPath(el){if(el===document.body)return'/html/body';if(el.id)return"//*[@id='"+el.id+"']";var ix=0;var siblings=el.parentNode?el.parentNode.children:[];for(var i=0;i<siblings.length;i++){var sib=siblings[i];if(sib===el)return getXPath(el.parentNode)+'/'+el.tagName.toLowerCase()+'['+(ix+1)+']';if(sib.tagName===el.tagName)ix++;}return'';}let box=document.createElement('div');box.style.cssText='position:fixed;z-index:2147483647;background:rgba(20,20,20,.9);color:#fff;font:12px monospace;padding:6px 8px;border-radius:6px;pointer-events:none;';document.body.appendChild(box);let lastXpath='';document.addEventListener('mousemove',e=>{let el=e.target;if(!el||el===document) return;let xp=getXPath(el);lastXpath=xp;box.textContent=xp;box.style.left=(e.clientX+12)+'px';box.style.top=(e.clientY+12)+'px';});document.addEventListener('keydown',async e=>{if(e.key.toLowerCase()==='c'&&lastXpath){try{await navigator.clipboard.writeText(lastXpath);box.textContent='Copied! '+lastXpath;}catch(err){box.textContent='Clipboard blocked: '+lastXpath;}}});})(); to get xpath, and c to copy
-def human_like_typing(element, text):
-    """
-    Types the given text into the web element character by character
-    with a random delay to mimic human behavior.
-
-    :param element: The selenium web element (e.g., a text input field).
-    :param text: The string to type.
-    """
-    for char in text:
-        element.send_keys(char)
-        # Introduce a random delay between 0.05 and 0.1 seconds
-        time.sleep(random.uniform(0.05, 0.2))
-
-def rand_delay():
-    return .5 * random.uniform(0.7, 2)
-
-def move_nat(target):
-    size = target.size
-    click_x = int(size["width"] * random.uniform(0.3, 0.7))
-    click_y = int(size["height"] * random.uniform(0.3, 0.7))
-
-    # Move to element first
-    actions = ActionChains(driver)
-    actions.move_to_element_with_offset(target, 0, 0)  # top-left of element
-
-    # Gradually move to random click point
-    steps = 10
-    dx = click_x / steps
-    dy = click_y / steps
-
-    for i in range(steps):
-        actions.move_by_offset(dx, dy)
-        actions.pause(0.01 * random.uniform(0.7, 1.3))
-
-    # Click
-    # actions.click()
-    actions.perform()
 
 try:
-    print("going to rugplay")
-    driver.get("https://rugplay.com")
-    print("clicking rugplay signin")
-    sign_in = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='sign in']")))
-    sign_in.click()
-    print("clicking google sign in")
-    google_sign_in = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c8']/div[2]/button[1]/span[1]")))
-    google_sign_in.click()
+    logger = Logger(True)
 
-    email_input = wait.until(
-        EC.element_to_be_clickable((By.ID, "identifierId"))
-    )
-    print("natruly hovering on email input")
-    move_nat(email_input)
-    print("human sleep")
-    time.sleep(rand_delay())
-    print("typing email")
-    human_like_typing(email_input, sys.argv[1])
+    click_sign_in(driver, logger)
 
-    next_button = wait.until(EC.element_to_be_clickable((By.ID, "identifierNext")))
-    time.sleep(rand_delay())
-    print("moving to next button")
-    move_nat(next_button)
-    print("sleeping before clicking next")
-    time.sleep(rand_delay())
-    next_button.click()
-    time.sleep(rand_delay())
-    password_input = wait.until(
-        EC.element_to_be_clickable((By.NAME, "Passwd"))
-    )
-    print("moving natruly to passwd field")
-    move_nat(password_input)
-    time.sleep(rand_delay())
-    print("typing password")
-    human_like_typing(password_input, os.getenv("PASSWORD"))
+    sign_into_google(driver, logger)
 
-    signin_button = driver.find_element(By.ID, "passwordNext")
-    print("moving natruly to sign in")
-    time.sleep(rand_delay())
-    move_nat(signin_button)
-    print("clicking sign in button")
-    time.sleep(rand_delay())
-    signin_button.click()
-    time.sleep(rand_delay())
+    claim_daily(driver, logger)
 
-    print("claim daily")
-    claim_daily = wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/button[1]")))
-    claim_daily.click()
-    print("enter portfolio page")
-    portfolio = wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/ul[1]/li[6]/a[1]")))
-    portfolio.click()
-    print("open send dialoug")
-    open_send_dialoug = wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/button[1]")))
-    open_send_dialoug.click()
-    print("click max button")
-    click_max_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c15']/div[2]/div[3]/div[1]/button[1]")))
-    click_max_button.click()
-    print("click and enter username")
-    uname_field = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='recipient']")))
-    print("typing username")
-    uname_field.send_keys(os.getenv("TARGET_ACCOUNT"))
-    print("send money")
-    click_send_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='bits-c15']/div[3]/button[2]")))
-    click_send_button.click()
+    send_all_money_to_users(driver, os.getenv("TARGET_ACC"), logger)
+
     print("done")
-
 except Exception as e:
     print(f"An error occurred: {e}")
 
