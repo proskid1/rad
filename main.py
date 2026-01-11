@@ -1,3 +1,5 @@
+from email.policy import default
+
 import undetected_chromedriver as uc
 from dotenv import load_dotenv
 from interactionn_prim import *
@@ -8,10 +10,9 @@ import click
 import os
 
 @click.command()
-@click.option("--email", help="email to log into")
-@click.option("--password", help="password for the email")
-@click.option("--target-acc", help="what account to send the money to")
-@click.option("--from-env", is_flag=True, help="use environment variables",
+@click.option("--email", reqrequired=False, help="password for the email")
+@click.option("--target-acc", required=False, help="what account to send the money to")
+@click.option("--from-env", required=False, is_flag=True, default=True, help="use environment variables",
               cls=MutuallyExclusiveOption,
               mutually_exclusive=["email", "password", "target_acc"]
 )
